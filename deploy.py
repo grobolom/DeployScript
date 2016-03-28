@@ -10,7 +10,6 @@ class Deployer:
     def main(self):
         CheckUncommitted().run()
         PullUpstream().run()
-        RunUnitTests().run()
         PushToUpstream().run()
         print 'done.'
 
@@ -42,14 +41,6 @@ class PushToUpstream(Command):
         no_changes = 'no changes found' in push_result
         pushed_some_changes = 'remote: added ' in push_result
         return (no_changes or pushed_some_changes)
-
-class RunUnitTests(Command):
-    name = 'Running Unit Tests'
-    command = 'cd ~/web/testing; phpunit unit'
-    def expectedOutput(self, output):
-        result = output.split('\n')[-2]
-        status = re.compile(r'\x1b[^m]*m').sub('', result)[:2]
-        return status == 'OK'
 
 class CheckUncommitted(Command):
     name = 'Check For Uncommitted Files'
