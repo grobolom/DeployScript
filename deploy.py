@@ -11,6 +11,10 @@ class Deployer:
         CheckUncommitted().run()
         PullUpstream().run()
         PushToUpstream().run()
+        SSHToUpstream().run()
+        CheckUncommitted().run()
+        PullUpstream().run()
+        DisconnectFromSSH().run()
         print 'done.'
 
 # abstract class
@@ -53,6 +57,19 @@ class PullUpstream(Command):
     command = 'hg pull --rebase; echo $?'
     def expectedOutput(self, output):
         return output.split('\n')[-2] != 0
+
+
+class SSHToUpstream(Command):
+    name = ''
+    command = ''
+    def expectedOutput(self, output):
+        return output
+
+class DisconnectFromSSH(Command):
+    name = ''
+    command = ''
+    def expectedOutput(self, output):
+        return output
 
 
 ####################
