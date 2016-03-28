@@ -5,20 +5,26 @@ import re
 import logging
 import optparse
 import subprocess
+import ConfigParser
 
 class Deployer:
     def main(self):
-        CheckUncommitted().run()
-        PullUpstream().run()
-        PushToUpstream().run()
-        SSHToUpstream().run()
-        CheckUncommitted().run()
-        PullUpstream().run()
-        DisconnectFromSSH().run()
+
+        Config = ConfigParser.ConfigParser();
+        Config.read("./config.ini");
+        ssh_command = Config.get('upstream', 'ssh')
+
+        # CheckUncommitted().run()
+        # PullUpstream().run()
+        # PushToUpstream().run()
+        SSHToUpstream(ssh_command).run()
+        # CheckUncommitted().run()
+        # PullUpstream().run()
+        # DisconnectFromSSH().run()
         print 'done.'
 
 # abstract class
-class Command:
+class Command(object):
     def call_command(self, command):
         # need shell=True for multiple commands (like running phpunit tests)
         process = subprocess.Popen(
@@ -60,13 +66,20 @@ class PullUpstream(Command):
 
 
 class SSHToUpstream(Command):
-    name = ''
-    command = ''
+    name = 'SSH To Upstream'
+    command = 'ssh '
+    ssh_destination = ''
+    def __init__(self, ssh_destination):
+        self.ssh_destination = ssh_destination
+    def run(self):
+        self.command = self.command + self.ssh_destination;
+        print self.command
+        super(SSHToUpstream, self).run()
     def expectedOutput(self, output):
         return output
 
 class DisconnectFromSSH(Command):
-    name = ''
+    name = 'Disconnect From SSH'
     command = ''
     def expectedOutput(self, output):
         return output
