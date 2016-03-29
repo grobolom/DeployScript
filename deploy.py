@@ -76,7 +76,6 @@ class PullUpstream(Command):
     def __init__(self, ssh):
         self.command = 'ssh ' + ssh + ' "' + self.command + '"'
     def expectedOutput(self, output):
-        print [self.command, output]
         return output.split('\n')[-2] != 0
 
 ####################
