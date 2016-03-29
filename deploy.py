@@ -12,10 +12,10 @@ class Deployer:
 
         Config = ConfigParser.ConfigParser();
         Config.read("./config.ini");
-        ssh_command = Config.get('upstream', 'ssh')
+        upstream = Config.get('upstream', 'ssh')
 
         CheckUncommitted().run()
-        PullUpstream().run()
+        PullFromUpstream().run()
         PushToUpstream().run()
 
         CheckUncommittedUpstream(upstream).run()
@@ -39,7 +39,6 @@ class Command(object):
         output = self.call_command(self.command)
         valid = self.expectedOutput(output)
         if not valid:
-            print output
             raise Exception(self.name + ' failed!')
 
 class PushToUpstream(Command):
@@ -57,20 +56,27 @@ class CheckUncommitted(Command):
     def expectedOutput(self, output):
         return len(output) <= 0
 
+class PullFromUpstream(Command):
+    name = 'Pull Files From Upstream'
+    command = 'hg pull --rebase; echo $?'
+    def expectedOutput(self, output):
+        return output.split('\n')[-2] != 0
+
 class CheckUncommittedUpstream(Command):
     name = 'Check For Uncommitted Files'
     command = 'hg status -mard'
     def __init__(self, ssh):
-        self.command = ssh + ' "' + self.command + '"'
+        self.command = 'ssh ' + ssh + ' "' + self.command + '"'
     def expectedOutput(self, output):
         return len(output) <= 0
 
 class PullUpstream(Command):
     name = 'Pull Files From Upstream'
-    command = 'hg pull --rebase; echo $?'
+    command = 'cd web; hg pull --rebase; echo $?'
     def __init__(self, ssh):
-        self.command = ssh + ' "' + self.command + '"'
+        self.command = 'ssh ' + ssh + ' "' + self.command + '"'
     def expectedOutput(self, output):
+        print [self.command, output]
         return output.split('\n')[-2] != 0
 
 ####################
