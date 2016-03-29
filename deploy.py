@@ -14,13 +14,12 @@ class Deployer:
         Config.read("./config.ini");
         ssh_command = Config.get('upstream', 'ssh')
 
-        # CheckUncommitted().run()
-        # PullUpstream().run()
-        # PushToUpstream().run()
-        SSHToUpstream(ssh_command).run()
-        # CheckUncommitted().run()
-        # PullUpstream().run()
-        # DisconnectFromSSH().run()
+        CheckUncommitted().run()
+        PullUpstream().run()
+        PushToUpstream().run()
+
+        CheckUncommittedUpstream(upstream).run()
+        PullUpstream(upstream).run()
         print 'done.'
 
 # abstract class
@@ -58,32 +57,21 @@ class CheckUncommitted(Command):
     def expectedOutput(self, output):
         return len(output) <= 0
 
+class CheckUncommittedUpstream(Command):
+    name = 'Check For Uncommitted Files'
+    command = 'hg status -mard'
+    def __init__(self, ssh):
+        self.command = ssh + ' "' + self.command + '"'
+    def expectedOutput(self, output):
+        return len(output) <= 0
+
 class PullUpstream(Command):
     name = 'Pull Files From Upstream'
     command = 'hg pull --rebase; echo $?'
+    def __init__(self, ssh):
+        self.command = ssh + ' "' + self.command + '"'
     def expectedOutput(self, output):
         return output.split('\n')[-2] != 0
-
-
-class SSHToUpstream(Command):
-    name = 'SSH To Upstream'
-    command = 'ssh '
-    ssh_destination = ''
-    def __init__(self, ssh_destination):
-        self.ssh_destination = ssh_destination
-    def run(self):
-        self.command = self.command + self.ssh_destination;
-        print self.command
-        super(SSHToUpstream, self).run()
-    def expectedOutput(self, output):
-        return output
-
-class DisconnectFromSSH(Command):
-    name = 'Disconnect From SSH'
-    command = ''
-    def expectedOutput(self, output):
-        return output
-
 
 ####################
 ####### RUN ########
