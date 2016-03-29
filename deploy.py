@@ -11,7 +11,7 @@ class Deployer:
     def main(self):
 
         Config = ConfigParser.ConfigParser();
-        Config.read("./config.ini");
+        Config.read("~/.deploy.config.ini");
         upstream = Config.get('upstream', 'ssh')
 
         CheckUncommitted().run()
