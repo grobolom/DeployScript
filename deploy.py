@@ -42,6 +42,8 @@ class Deployer:
 
 # abstract class
 class Command(object):
+    name = ''
+    command = ''
     def call_command(self, command):
         # need shell=True for multiple commands (like running phpunit tests)
         process = subprocess.Popen(
@@ -51,6 +53,7 @@ class Command(object):
                 shell=True,
                 cwd='/home/vasja/web')
         output,_ = process.communicate()
+        print self.name
         return output;
 
     def run(self):
