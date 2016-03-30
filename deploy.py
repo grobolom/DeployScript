@@ -7,7 +7,7 @@ import optparse
 import subprocess
 import ConfigParser
 
-def print_checkbox(self):
+def print_checkbox():
     print '\033[0;32m'
     print '  ............................ '
     print ' ..                          ..'
