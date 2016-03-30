@@ -7,13 +7,28 @@ import optparse
 import subprocess
 import ConfigParser
 
-import checkbox
+def print_checkbox(self):
+  print '\033[0;32m'
+  print '  ............................ '
+  print ' ..                          ..'
+  print ' .                     ..     .'
+  print ' .                    .....   .'
+  print ' .                   ......   .'
+  print ' .                 ......     .'
+  print ' .                ......      .'
+  print ' .      .        .....        .'
+  print ' .    .....    ......         .'
+  print ' .     ...... ......          .'
+  print ' .      ..........            .'
+  print ' .        .......             .'
+  print ' .           ...              .'
+  print ' ..                          ..'
+  print '  ............................ '
 
 class Deployer:
     def main(self):
-
         Config = ConfigParser.ConfigParser();
-        Config.read("~/.deploy.config.ini");
+        Config.read(os.path.expanduser("~/.deploy.config.ini"));
         upstream = Config.get('upstream', 'ssh')
 
         CheckUncommitted().run()
