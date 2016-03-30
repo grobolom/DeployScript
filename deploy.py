@@ -8,22 +8,22 @@ import subprocess
 import ConfigParser
 
 def print_checkbox(self):
-  print '\033[0;32m'
-  print '  ............................ '
-  print ' ..                          ..'
-  print ' .                     ..     .'
-  print ' .                    .....   .'
-  print ' .                   ......   .'
-  print ' .                 ......     .'
-  print ' .                ......      .'
-  print ' .      .        .....        .'
-  print ' .    .....    ......         .'
-  print ' .     ...... ......          .'
-  print ' .      ..........            .'
-  print ' .        .......             .'
-  print ' .           ...              .'
-  print ' ..                          ..'
-  print '  ............................ '
+    print '\033[0;32m'
+    print '  ............................ '
+    print ' ..                          ..'
+    print ' .                     ..     .'
+    print ' .                    .....   .'
+    print ' .                   ......   .'
+    print ' .                 ......     .'
+    print ' .                ......      .'
+    print ' .      .        .....        .'
+    print ' .    .....    ......         .'
+    print ' .     ...... ......          .'
+    print ' .      ..........            .'
+    print ' .        .......             .'
+    print ' .           ...              .'
+    print ' ..                          ..'
+    print '  ............................ '
 
 class Deployer:
     def main(self):
