@@ -45,6 +45,7 @@ class Command(object):
     name = ''
     command = ''
     def call_command(self, command):
+        print self.name
         # need shell=True for multiple commands (like running phpunit tests)
         process = subprocess.Popen(
                 command,
@@ -53,7 +54,6 @@ class Command(object):
                 shell=True,
                 cwd='/home/vasja/web')
         output,_ = process.communicate()
-        print self.name
         return output;
 
     def run(self):
