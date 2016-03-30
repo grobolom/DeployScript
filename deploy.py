@@ -7,6 +7,8 @@ import optparse
 import subprocess
 import ConfigParser
 
+import checkbox
+
 class Deployer:
     def main(self):
 
@@ -20,6 +22,7 @@ class Deployer:
 
         CheckUncommittedUpstream(upstream).run()
         PullUpstream(upstream).run()
+        print_checkbox()
         print 'done.'
 
 # abstract class
